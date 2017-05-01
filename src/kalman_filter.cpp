@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cfloat>
 #include "kalman_filter.h"
 
 using namespace std;
@@ -58,17 +59,9 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   const float vx = x_(2);
   const float vy = x_(3);
 
-  // divided by zero check
-  if (px == 0 && py == 0) {
-    cout << "CalculateJacobian () - Error - Divided by Zero" << endl;
-    return;
-  }
-
   hx(0) = sqrt(px*px + py*py);
   hx(1) = atan2(py, px);
-  hx(2) = (px*vx + py*vy) / hx(0);
-
-
+  hx(2) = (px*vx + py*vy) / max(FLT_EPSILON, hx(0));
 
   VectorXd y = z - hx;
 

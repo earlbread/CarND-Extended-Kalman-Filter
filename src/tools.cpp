@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cfloat>
 #include "tools.h"
 
 using namespace std;
@@ -45,12 +46,7 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   const float vx = x_state(2);
   const float vy = x_state(3);
 
-  if (px == 0 && py == 0) {
-    cout << "CalculateJacobian () - Error - Divided by Zero" << endl;
-    return Hj;
-  }
-
-  const float c1 = (px * px) + (py * py);
+  const float c1 = max(FLT_EPSILON , (px * px) + (py * py));
   const float c2 = sqrt(c1);
   const float c3 = c1 * c2;
 
