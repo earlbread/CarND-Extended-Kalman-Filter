@@ -57,6 +57,9 @@ FusionEKF::FusionEKF() {
 
   // initializing process covariance matrix
   ekf_.Q_ = MatrixXd(4, 4);
+
+  noise_ax = 9;
+  noise_ay = 9;
 }
 
 /**
@@ -135,9 +138,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   // update state transition matrix F
   ekf_.F_(0, 2) = dt;
   ekf_.F_(1, 3) = dt;
-
-  const float noise_ax = 9;
-  const float noise_ay = 9;
 
   // update process noise covariance matrix Q
   ekf_.Q_ << dt_4/4*noise_ax, 0, dt_3/2*noise_ax, 0,
